@@ -1,6 +1,6 @@
 var tusgastos;
 (function(){
-    tusgastos = angular.module('tusgastos', ['chieffancypants.loadingBar']);
+    tusgastos = angular.module('tusgastos', ['chieffancypants.loadingBar', 'chart.js']);
     var gblidusuario = "";
     var gblemail = "";
     var gblnombre = "";
@@ -344,6 +344,37 @@ var tusgastos;
           }
         }
 
+
+    });
+
+    tusgastos.controller('DashboardController', function($scope, $http, $window){
+      var datosraw = "";
+      var labelsPie = "";
+      var datosPie = "";
+      var optionsPie = { legend: { display: true } };
+
+      $scope.cargaGraficas = function(){
+        try{
+          var param = encode64($scope.gblidusuario+'_');
+
+          $http({
+            method: 'GET'
+            ,url: 'actions/cargaDashboard.php?param='+param
+          }).then(function successCallback(response){
+            $scope.datosraw = response.data;
+            if(($scope.datosraw.res === "1")||($scope.datosraw.res === 1)){
+              $scope.labelsPie = $scope.datosraw.graficaPie.labelsPie;
+              $scope.datosPie = $scope.datosraw.graficaPie.datosPie;
+            }else{
+              alert($scope.datosraw.msg);
+            }
+          }, function errorCallback(response){
+            console.log("Excepcion cargando las graficas: " + ex);
+          });
+        }catch(ex){
+
+        }
+      }
 
     });
 

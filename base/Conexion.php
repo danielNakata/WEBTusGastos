@@ -3,11 +3,11 @@
 
     class Conexion{
 
-        public $host = "127.0.0.1";
+        public $host = "fdb20.awardspace.com";
         public $port = "3306";
-        public $user = "root";
-        public $pass = "";
-        public $name = "controlgastos";
+        public $user = "2789616_controlgastos";
+        public $pass = "s02006480D";
+        public $name = "2789616_controlgastos";
         public $link = "";
         public $isConnected = true;
 

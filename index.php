@@ -22,6 +22,8 @@
         <script type="text/javascript" src="js/init.js"></script>
         <script type="text/javascript" src="js/modernzr.js"></script>
         <script type="text/javascript" src="js/popper.js"></script>
+        <script type="text/javascript" src="js/Chart.min.js"></script>
+        <script type="text/javascript" src="js/angular-chart.js"></script>
         <script type="text/javascript" src="js/tusgastos.js"></script>
         <script type="text/javascript" src="js/funciones.js"></script>
     </head>
