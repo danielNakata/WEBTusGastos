@@ -1,6 +1,12 @@
 <?php
   include "../base/Conexion.php";
 
+  $param = "";
+  $param = $_GET["param"];
+  $param = base64_decode($param);
+
+  $txtIdUsuario = strtok($param,"_");
+
   $salidaJSON = "{\"res\":\"0\", \"msg\":\"NO SE PUDO OBTENER LOS CATALOGOS\"}";
   $catEstatusIngreso = "";
   $catEstatusPagos = "";
@@ -50,7 +56,7 @@
       $catEstatusUsuarios = ",\"catalogoEstatusUsuarios\":[".substr($catEstatusUsuarios,1)."] ";
     }
 
-    $resultado = mysqli_query($conex->getConexion(), "select idtipoingreso, tipoingreso from tcattipoingreso order by idtipoingreso");
+    $resultado = mysqli_query($conex->getConexion(), "select idtipoingreso, tipoingreso from tcattipoingreso where idusuario = ".$txtIdUsuario." order by idtipoingreso");
     if($resultado != false){
       $campos = $resultado->fetch_fields();
       while(($fila = mysqli_fetch_assoc($resultado))!=false){
@@ -63,7 +69,7 @@
       $catTipoIngreso = ",\"catalogoTipoIngreso\":[".substr($catTipoIngreso,1)."] ";
     }
 
-    $resultado = mysqli_query($conex->getConexion(), "select idtipopago, tipopago from tcattipopagos order by idtipopago");
+    $resultado = mysqli_query($conex->getConexion(), "select idtipopago, tipopago from tcattipopagos where idusuario = ".$txtIdUsuario." order by idtipopago");
     if($resultado != false){
       $campos = $resultado->fetch_fields();
       while(($fila = mysqli_fetch_assoc($resultado))!=false){

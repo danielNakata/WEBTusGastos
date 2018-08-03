@@ -18,7 +18,6 @@ $conex = new Conexion();
 $conex->creaConexion();
 if($conex->getIsConnected()){
     $sql = "SELECT IFNULL((SELECT MAX(idgasto) FROM tgastos WHERE idusuario = ".$txtIdUsuario."), 0) as existe ";
-    echo "<br />".$sql;
     $resultado = mysqli_query($conex->getConexion(), $sql);
     if($resultado != false){
       $fila = $resultado->fetch_assoc();

@@ -8,6 +8,9 @@
       $email = strtok($param,"_");
       $rnd = strtok("_");
       session_start();
+      if(!isset($_SESSION["idusuario"])){
+          header("Location: index.php");
+      }
     }else{
       header("Location: index.php");
     }
@@ -53,7 +56,7 @@
         </ul>
         <ul class="navbar-nav px-3">
             <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#">Salir</a>
+            <a class="nav-link" href="actions/cierraSesion.php">Salir</a>
             </li>
         </ul>
         </nav>
@@ -64,13 +67,13 @@
             <div class="sidebar-sticky">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#" onclick="muestraDivMenuPrin('divMainDashboard')">
+                        <a class="nav-link active" href="#" onclick="muestraDivMenuPrin('divMainDashboard')" >
                         <span data-feather="home"></span>
                         Dashboard <span class="sr-only">(current)</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#" onclick="muestraDivMenuPrin('divMainIngresos')">
+                        <a class="nav-link" href="#" onclick="muestraDivMenuPrin('divMainIngresos')" >
                         <span data-feather="file"></span>
                         Ingresos
                         </a>

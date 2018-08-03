@@ -6,6 +6,10 @@ var tusgastos;
     var gblnombre = "";
     var gblapellidos = "";
 
+    var labelsPie = "";
+    var datosPie = "";
+    var optionsPie = "";
+
 
     tusgastos.directive('calendar', function(){
         return{
@@ -22,7 +26,6 @@ var tusgastos;
             }
         };
      });
-
 
     tusgastos.controller('fechaController', function($scope){
 
@@ -60,6 +63,38 @@ var tusgastos;
     });
 
 
+    tusgastos.controller('DashboardController', function($scope, $http, $window){
+      var datosraw = "";
+      var labelsPie = "";
+      var datosPie = "";
+      var optionsPie = "";
+
+      $scope.cargaGraficas = function(){
+
+        try{
+          var param = encode64($scope.gblidusuario+'_');
+
+          $http({
+            method: 'GET'
+            ,url: 'actions/cargaDashboard.php?param='+param
+          }).then(function successCallback(response){
+            $scope.datosraw = response.data;
+            if(($scope.datosraw.res === "1")||($scope.datosraw.res === 1)){
+              $scope.labelsPie = $scope.datosraw.graficaPie.labelsPie;
+              $scope.datosPie = $scope.datosraw.graficaPie.datosPie;
+            }else{
+              alert($scope.datosraw.msg);
+            }
+          }, function errorCallback(response){
+            console.log("Excepcion cargando las graficas: " + ex);
+          });
+        }catch(ex){
+
+        }
+      }
+
+    });
+
 
     tusgastos.controller('IngresosController', function($scope, $http, $window){
         var datosraw = "";
@@ -91,9 +126,10 @@ var tusgastos;
           try{
             $scope.limpiaCampos();
             $scope.buscarIngreso();
+            param = encode64($scope.gblidusuario+"_");
             $http({
               method: 'GET'
-              ,url: 'actions/consultaCatalogos.php'
+              ,url: 'actions/consultaCatalogos.php?param='+param
             }).then(function successCallback(response){
               $scope.datosraw = response.data;
               if(($scope.datosraw.res === "1")||($scope.datosraw.res === 1)){
@@ -126,16 +162,15 @@ var tusgastos;
             param = encode64($scope.nuevoIngreso.txtConcepto+"_"+$scope.nuevoIngreso.cmbIngreso
                             +"_"+$scope.nuevoIngreso.txtMonto+"_"+$scope.nuevoIngreso.txtIva
                             +"_"+$scope.nuevoIngreso.txtTotal+"_"+$scope.nuevoIngreso.txtComentarios+"_"+$scope.gblidusuario);
-            alert(param);
             $http({
               method:'GET'
               ,url:'actions/guardaIngreso.php?param='+param
             }).then(function successCallback(response){
               $scope.datosraw = response.data;
-              //alert($scope.datosraw.msg);
               if(($scope.datosraw.res === "1")||($scope.datosraw.res === 1)){
                 $scope.buscarIngreso();
                 $scope.limpiaCampos();
+                $scope.broadcast();
               }
             }, function errorCallback(response){
                 alert("En el error guardando ingresos: " + JSON.stringify(response));
@@ -201,9 +236,10 @@ var tusgastos;
           try{
             $scope.limpiaCampos();
             $scope.buscarPago();
+            param = encode64($scope.gblidusuario+"_");
             $http({
               method: 'GET'
-              ,url: 'actions/consultaCatalogos.php'
+              ,url: 'actions/consultaCatalogos.php?param='+param
             }).then(function successCallback(response){
               $scope.datosraw = response.data;
               if(($scope.datosraw.res === "1")||($scope.datosraw.res === 1)){
@@ -236,7 +272,6 @@ var tusgastos;
             param = encode64($scope.nuevoPago.txtConcepto+"_"+$scope.nuevoPago.cmbPago
                             +"_"+$scope.nuevoPago.txtMonto+"_"+$scope.nuevoPago.txtIva
                             +"_"+$scope.nuevoPago.txtTotal+"_"+$scope.nuevoPago.txtComentarios+"_"+$scope.gblidusuario);
-            alert(param);
             $http({
               method:'GET'
               ,url:'actions/guardaGasto.php?param='+param
@@ -291,9 +326,10 @@ var tusgastos;
 
         $scope.consultaCatalogos = function(){
           try{
+            param = encode64($scope.gblidusuario+"_");
             $http({
               method: 'GET'
-              ,url: 'actions/consultaCatalogos.php'
+              ,url: 'actions/consultaCatalogos.php?param='+param
             }).then(function successCallback(response){
               $scope.datosraw = response.data;
               if(($scope.datosraw.res === "1")||($scope.datosraw.res === 1)){
@@ -347,36 +383,7 @@ var tusgastos;
 
     });
 
-    tusgastos.controller('DashboardController', function($scope, $http, $window){
-      var datosraw = "";
-      var labelsPie = "";
-      var datosPie = "";
-      var optionsPie = { legend: { display: true } };
 
-      $scope.cargaGraficas = function(){
-        try{
-          var param = encode64($scope.gblidusuario+'_');
-
-          $http({
-            method: 'GET'
-            ,url: 'actions/cargaDashboard.php?param='+param
-          }).then(function successCallback(response){
-            $scope.datosraw = response.data;
-            if(($scope.datosraw.res === "1")||($scope.datosraw.res === 1)){
-              $scope.labelsPie = $scope.datosraw.graficaPie.labelsPie;
-              $scope.datosPie = $scope.datosraw.graficaPie.datosPie;
-            }else{
-              alert($scope.datosraw.msg);
-            }
-          }, function errorCallback(response){
-            console.log("Excepcion cargando las graficas: " + ex);
-          });
-        }catch(ex){
-
-        }
-      }
-
-    });
 
 
 
